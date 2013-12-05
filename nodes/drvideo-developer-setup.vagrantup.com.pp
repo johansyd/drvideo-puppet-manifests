@@ -8,7 +8,7 @@ node 'drvideo-developer-setup.vagrantup.com' {
   class { 'apache': } ->
   file { '/var/www/videoplaza-html5':
      ensure => 'link',
-     target => '/home/vagrant/src/videoplaza-html5',
+     target => '/home/vagrant/videoplaza-html5',
   } 
 
 
@@ -22,10 +22,30 @@ node 'drvideo-developer-setup.vagrantup.com' {
 
   class { 'nodejs': 
     version => 'stable',
-  } -> 
+  } ->
 
-  package { 'grunt-cli':
-    provider        => 'npm',
-    install_options => ['-g']
+  exec {'npm install -g grunt-cli':
+     path => '/usr/local/bin:/usr/bin:/usr/sbin:/bin',
+     subscribe => Class['nodejs'],
+     refreshonly => true
+  } 
+
+  exec {'apt-get update':
+   path => '/usr/bin:/usr/sbin:/bin',
+  } ->
+
+  package { 'alien':
+    ensure  => 'installed',
+    require => Package['dpkg-dev', 'debhelper']
   }
+
+  package { 'dpkg-dev':
+    ensure => 'installed'
+  }
+
+  package { 'debhelper':
+    ensure => 'installed'
+  }
+  
+
 }
