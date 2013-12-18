@@ -27,7 +27,7 @@ node 'drvideo-developer-setup.vagrantup.com' {
     require => Package['dpkg-dev', 'debhelper']
   }
 
-  # class { 'nodejs': }
+  class { 'nodejs': }
 
   package { 'dpkg-dev':
     ensure => 'installed'
