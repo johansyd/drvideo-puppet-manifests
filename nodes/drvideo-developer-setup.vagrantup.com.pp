@@ -22,16 +22,12 @@ node 'drvideo-developer-setup.vagrantup.com' {
    path => '/usr/bin:/usr/sbin:/bin',
   } ->
 
-  exec {'DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade':
-   path => '/usr/bin:/usr/sbin:/bin',
-  } ->
-
   package { 'alien':
     ensure  => 'installed',
     require => Package['dpkg-dev', 'debhelper']
   }
 
-  class { 'nodejs': }
+  # class { 'nodejs': }
 
   package { 'dpkg-dev':
     ensure => 'installed'
